@@ -81,3 +81,9 @@ vMBPortTimersDisable(  )
 {
     bTimeoutEnable = FALSE;
 }
+
+void
+vMBPortTimersDelay(USHORT usTimeOutMS)
+{
+    Sleep(usTimeOutMS);
+}
