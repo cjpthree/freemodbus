@@ -61,6 +61,7 @@ _tmain( int argc, _TCHAR * argv[] )
     int             iExitCode;
     TCHAR           cCh;
     BOOL            bDoExit;
+    static BOOL      firstFlag = true;
 
     const UCHAR     ucSlaveID[] = { 0xAA, 0xBB, 0xCC };
 
@@ -69,11 +70,13 @@ _tmain( int argc, _TCHAR * argv[] )
         _ftprintf( stderr, _T( "%s: can't initialize modbus stack!\r\n" ), PROG );
         iExitCode = EXIT_FAILURE;
     }
+#if 0 // simple not use
     else if( eMBSetSlaveID( 0x34, TRUE, ucSlaveID, 3 ) != MB_ENOERR )
     {
         _ftprintf( stderr, _T( "%s: can't set slave id!\r\n" ), PROG );
         iExitCode = EXIT_FAILURE;
     }
+#endif
     else
     {
         /* Create synchronization primitives and set the current state
@@ -87,8 +90,17 @@ _tmain( int argc, _TCHAR * argv[] )
         bDoExit = FALSE;
         do
         {
-            _tprintf( _T( "> " ) );
-            cCh = _gettchar(  );
+            // auto run first
+            if (!firstFlag)
+            {
+                _tprintf(_T("> "));
+                cCh = _gettchar();
+            }
+            else
+            {
+                cCh = 'e';
+                firstFlag = false;
+            }
             switch ( cCh )
             {
             case _TCHAR( 'q' ):
